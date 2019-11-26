@@ -1,6 +1,9 @@
-# remote_mobile
+# Remote Mobile
 
-A new Flutter project.
+This project is a Multiplatform application made with Flutter.
+It does showcase different coding techniques as well as a structred way to build a
+Flutter app in such a way that it perform the best at any conditions.
+I hope you like it !
 
 ## Getting Started
 
