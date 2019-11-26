@@ -1,4 +1,6 @@
 import 'package:meta/meta.dart';
+import 'package:remote_mobile/core/error/exceptions.dart';
+import 'dart:convert';
 import 'package:remote_mobile/features/github_repo/data/models/github_repo_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,7 +14,7 @@ abstract class GithubRepoLocalDatasource {
   Future<void> cacheReposList(List<GithubRepoModel> repos);
 }
 
-const CACHED_NUMBER_TRIVIA = 'CACHED_NUMBER_TRIVIA';
+const CACHED_REPOS = 'CACHED_REPOS';
 
 class GithubRepoLocalDatasourceImpl implements GithubRepoLocalDatasource {
   final SharedPreferences sharedPreferences;
@@ -23,11 +25,28 @@ class GithubRepoLocalDatasourceImpl implements GithubRepoLocalDatasource {
 
   @override
   Future<void> cacheReposList(List<GithubRepoModel> repos) {
-    return null;
+    List<Map<String, dynamic>> jsonMaps = [];
+    repos.forEach((repo) {
+      jsonMaps.add(repo.toJson());
+    });
+    return sharedPreferences.setString(
+      CACHED_REPOS,
+      json.encode(jsonMaps),
+    );
   }
 
   @override
   Future<List<GithubRepoModel>> getLastCachedTrendingList() {
-    return null;
+    final jsonString = sharedPreferences.getString(CACHED_REPOS);
+    if (jsonString != null) {
+      List<GithubRepoModel> repos = [];
+      List<dynamic> items = json.decode(jsonString);
+      items.forEach((item) {
+        repos.add(GithubRepoModel.fromJson(item));
+      });
+      return Future.value(repos);
+    } else {
+      throw CacheException();
+    }
   }
 }

@@ -91,7 +91,7 @@ void main() {
           final result = await repository.getTrendingRepos();
           // assert
           verify(mockRemoteDataSource.getTrendingGithubRepos());
-          expect(result, equals(Right(tNumberTrivia)));
+          expect(result, equals(Right(tRepos)));
         },
       );
 
