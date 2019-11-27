@@ -32,3 +32,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Raleway
+      fonts:
+        - asset: assets/fonts/Raleway/Raleway-Black.ttf
+        - asset: assets/fonts/Raleway/Raleway-Bold.ttf
+        - asset: assets/fonts/Raleway/Raleway-Light.ttf
+        - asset: assets/fonts/Raleway/Raleway-Regular.ttf
+        - asset: assets/fonts/Raleway/Raleway-Italic.ttf
