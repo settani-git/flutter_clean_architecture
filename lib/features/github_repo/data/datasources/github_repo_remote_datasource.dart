@@ -35,7 +35,7 @@ class GithubRepoRemoteDatasourceImpl implements GithubRepoRemoteDatasource {
     if (response.statusCode == 200) {
       List<GithubRepoModel> repos = [];
       String responseBody = response.body;
-      List<dynamic> responseArray = json.decode(responseBody);
+      List<dynamic> responseArray = json.decode(responseBody)["items"];
       responseArray.forEach((value) {
         repos.add(GithubRepoModel.fromJson(value));
       });

@@ -26,7 +26,7 @@ class GithubRepoBloc extends Bloc<GithubRepoEvent, GithubRepoState> {
   Stream<GithubRepoState> mapEventToState(
     GithubRepoEvent event,
   ) async* {
-    if (event is GetTrendingRepos) {
+    if (event is GetGithubReposEvent) {
       yield Loading();
       final failureOrTrivia = await getTrendingRepos(NoParams());
       yield* _eitherLoadedOrErrorState(failureOrTrivia);
