@@ -1,19 +1,28 @@
-# Remote Mobile
+# Remote Mobile Challenge
 
 This project is a Multiplatform application made with Flutter.
 It does showcase different coding techniques as well as a structred way to build a
 Flutter app in such a way that it perform the best at any conditions.
 I hope you like it !
 
-## Getting Started
+## Run The Project
 
-This project is a starting point for a Flutter application.
+After installing flutter ( look here : https://flutter.dev/docs/get-started/install )
+All you have to do is install dependencies by running : `$ flutter pub get packages`
+Ps : you can use either Vs Code or Intellij Idea
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Application architecture
+  ### Data layer
+      - Datasources
+      - Repositories ( implementation )
+      - Models
+  ### Domain layer
+      - Entities
+      - Repositories ( Abstraction )
+      - Usecases
+  ### Presentaion layer
+      - Business Logic ( BLoC Pattern )
+      - Widgets
+  ### Dependencies
+      - Dependencies Injection Management
+  ### Unit tests    
