@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:remote_mobile/features/github_repo/domain/entities/github_repo.dart';
 
 class RepoItemWidget extends StatelessWidget {
@@ -9,51 +10,77 @@ class RepoItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 5.0,
-      child: Column(
-        children: <Widget>[
-          Text(
-            repo.name,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22.0,
-                fontFamily: 'Raleway'),
-          ),
-          Text(
-            repo.description.length >= 50
-                ? repo.description.substring(50) + ' ...'
-                : repo.description,
-            style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 14.0,
-                fontFamily: 'Raleway'),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Image.asset(
-                "assets/img/placeholder_img.jpg",
-                width: 50.0,
-                height: 50.0,
+      elevation: 2.0,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              repo.name,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0,
+                  color: Colors.blue.shade900,
+                  fontFamily: 'Raleway'),
+            ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Container(
+              height: 30.0,
+              child: RichText(
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
+                  text: repo.description,
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14.0,
+                      color: Colors.black,
+                      fontFamily: 'Raleway'),
+                ),
               ),
-              Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.star,
-                    size: 12.0,
-                  ),
-                  Text(
-                    repo.starCount.toString(),
-                    style: TextStyle(
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Image.asset(
+                      "assets/img/placeholder_img.jpg",
+                      width: 40.0,
+                      height: 40.0,
+                    ),
+                    Text(
+                      repo.owner,
+                      style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 12.0,
-                        fontFamily: 'Raleway'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+                        color: Colors.blue,
+                        fontFamily: 'Raleway',
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.star,
+                      size: 26.0,
+                    ),
+                    Text(
+                      NumberFormat.compact().format(repo.starCount).toString(),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12.0,
+                          fontFamily: 'Raleway'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

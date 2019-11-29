@@ -28,7 +28,8 @@ class GithubRepoBloc extends Bloc<GithubRepoEvent, GithubRepoState> {
   ) async* {
     if (event is GetGithubReposEvent) {
       yield Loading();
-      final failureOrTrivia = await getTrendingRepos(NoParams());
+      final failureOrTrivia = await getTrendingRepos(
+          GetTrendingReposParams(pageNumber: event.pageNumber));
       yield* _eitherLoadedOrErrorState(failureOrTrivia);
     }
   }

@@ -67,6 +67,7 @@ void main() {
       tRepoModel,
       tRepoModel,
     ];
+    final testPageNumber = 0;
 
     test(
       'should check if the device is online',
@@ -74,23 +75,24 @@ void main() {
         // arrange
         when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
         // act
-        repository.getTrendingRepos();
+        repository.getTrendingRepos(testPageNumber);
         // assert
         verify(mockNetworkInfo.isConnected);
       },
     );
 
     runTestsOnline(() {
+      int testPageNumber = 0;
       test(
         'should return remote data when the call to remote data source is successful',
         () async {
           // arrange
-          when(mockRemoteDataSource.getTrendingGithubRepos())
+          when(mockRemoteDataSource.getTrendingGithubRepos(testPageNumber))
               .thenAnswer((_) async => tRepos);
           // act
-          final result = await repository.getTrendingRepos();
+          final result = await repository.getTrendingRepos(testPageNumber);
           // assert
-          verify(mockRemoteDataSource.getTrendingGithubRepos());
+          verify(mockRemoteDataSource.getTrendingGithubRepos(testPageNumber));
           expect(result, equals(Right(tRepos)));
         },
       );
@@ -99,12 +101,12 @@ void main() {
         'should cache the data locally when the call to remote data source is successful',
         () async {
           // arrange
-          when(mockRemoteDataSource.getTrendingGithubRepos())
+          when(mockRemoteDataSource.getTrendingGithubRepos(testPageNumber))
               .thenAnswer((_) async => tRepos);
           // act
-          await repository.getTrendingRepos();
+          await repository.getTrendingRepos(testPageNumber);
           // assert
-          verify(mockRemoteDataSource.getTrendingGithubRepos());
+          verify(mockRemoteDataSource.getTrendingGithubRepos(testPageNumber));
           verify(mockLocalDataSource.cacheReposList(tRepos));
         },
       );
@@ -113,12 +115,12 @@ void main() {
         'should return server failure when the call to remote data source is unsuccessful',
         () async {
           // arrange
-          when(mockRemoteDataSource.getTrendingGithubRepos())
+          when(mockRemoteDataSource.getTrendingGithubRepos(testPageNumber))
               .thenThrow(ServerException());
           // act
-          final result = await repository.getTrendingRepos();
+          final result = await repository.getTrendingRepos(testPageNumber);
           // assert
-          verify(mockRemoteDataSource.getTrendingGithubRepos());
+          verify(mockRemoteDataSource.getTrendingGithubRepos(testPageNumber));
           verifyZeroInteractions(mockLocalDataSource);
           expect(result, equals(Left(ServerFailure())));
         },
@@ -133,7 +135,7 @@ void main() {
           when(mockLocalDataSource.getLastCachedTrendingList())
               .thenAnswer((_) async => tRepos);
           // act
-          final result = await repository.getTrendingRepos();
+          final result = await repository.getTrendingRepos(testPageNumber);
           // assert
           verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastCachedTrendingList());
@@ -148,7 +150,7 @@ void main() {
           when(mockLocalDataSource.getLastCachedTrendingList())
               .thenThrow(CacheException());
           // act
-          final result = await repository.getTrendingRepos();
+          final result = await repository.getTrendingRepos(testPageNumber);
           // assert
           verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastCachedTrendingList());

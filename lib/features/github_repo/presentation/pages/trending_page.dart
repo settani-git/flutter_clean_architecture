@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:remote_mobile/features/github_repo/domain/entities/github_repo.dart';
-import 'package:remote_mobile/features/github_repo/domain/usecases/get_trending_repos_usecase.dart';
 import 'package:remote_mobile/features/github_repo/presentation/bloc/bloc.dart';
 import 'package:remote_mobile/features/github_repo/presentation/widgets/repo_item_widget.dart';
 
@@ -11,11 +10,14 @@ class TrendingPage extends StatefulWidget {
 }
 
 class _TrendingPageState extends State<TrendingPage> {
+  List<Widget> moreRepos = [];
+  int pageNumber = 0;
+
   @override
   void initState() {
     super.initState();
     BlocProvider.of<GithubRepoBloc>(context).add(
-      GetGithubReposEvent(),
+      GetGithubReposEvent(pageNumber: pageNumber),
     );
   }
 
@@ -33,7 +35,18 @@ class _TrendingPageState extends State<TrendingPage> {
                   SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: _initAndBuildReposList(),
+                      child: BlocBuilder<GithubRepoBloc, GithubRepoState>(
+                        builder: (context, state) {
+                          if (state is Loading) {
+                            return buildLoadingWidget();
+                          } else if (state is Loaded) {
+                            return buildReposList(state.repos);
+                          } else if (state is Error) {
+                            return buildErrorDisplayWidget(state.message);
+                          } else
+                            return Container();
+                        },
+                      ),
                     ),
                   ),
                 ]),
@@ -46,34 +59,34 @@ class _TrendingPageState extends State<TrendingPage> {
     );
   }
 
-  Widget _initAndBuildReposList() {
-    return BlocBuilder<GithubRepoBloc, GithubRepoState>(
-      builder: (context, state) {
-        if (state is Loading) {
-          return buildLoadingWidget();
-        } else if (state is Loaded) {
-          return buildReposList(state.repos);
-        } else if (state is Error) {
-          return buildErrorDisplayWidget(state.message);
-        } else
-          return Container();
-      },
-    );
-  }
-
   buildReposList(List<GithubRepo> repos) {
     List<Widget> widgets = buildReposColumnWidgets(repos);
     return Column(
       children: <Widget>[
         ...widgets,
+        FlatButton(
+          child: Text(
+            'Load more (not implemented yet)',
+            style: TextStyle(
+              fontFamily: 'Raleway',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            // Load more - not implemented yet
+          },
+        ),
       ],
     );
   }
 
   buildReposColumnWidgets(List<GithubRepo> repos) {
     List<Widget> widgets = [];
-    repos.forEach((repo){
-      RepoItemWidget(repo: repo);
+    repos.forEach((repo) {
+      widgets.add(RepoItemWidget(repo: repo));
+      widgets.add(SizedBox(
+        height: 8.0,
+      ));
     });
     return widgets;
   }

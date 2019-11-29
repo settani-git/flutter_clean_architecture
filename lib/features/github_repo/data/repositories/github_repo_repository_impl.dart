@@ -20,10 +20,10 @@ class GithubRepoRepositoryImpl implements GithubRepoRepository {
   });
 
   @override
-  Future<Either<Failure, List<GithubRepo>>> getTrendingRepos() async {
+  Future<Either<Failure, List<GithubRepo>>> getTrendingRepos(int pageNumber) async {
     if (await networkInfo.isConnected) {
       try {
-        final repos = await remoteDataSource.getTrendingGithubRepos();
+        final repos = await remoteDataSource.getTrendingGithubRepos(pageNumber);
         localDataSource.cacheReposList(repos);
         return Right(repos);
       } on ServerException {

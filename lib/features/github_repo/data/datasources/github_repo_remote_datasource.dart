@@ -8,7 +8,7 @@ abstract class GithubRepoRemoteDatasource {
   /// Calls the https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<List<GithubRepoModel>> getTrendingGithubRepos();
+  Future<List<GithubRepoModel>> getTrendingGithubRepos(int pageNumber);
 }
 
 // Since it's a small repository we put the implementation in same file as the contract
@@ -22,8 +22,8 @@ class GithubRepoRemoteDatasourceImpl implements GithubRepoRemoteDatasource {
   });
 
   @override
-  Future<List<GithubRepoModel>> getTrendingGithubRepos() async {
-    String params = '?q=created:>2017-10-22&sort=stars&order=desc';
+  Future<List<GithubRepoModel>> getTrendingGithubRepos(int pageNumber) async {
+    String params = '?q=created:>2017-10-22&sort=stars&order=desc&page=$pageNumber';
     String url = ReposApiEndpoint + params;
     Map<String, String> headers = {
       'Content-Type': 'application/json',

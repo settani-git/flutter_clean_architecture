@@ -44,6 +44,7 @@ void main() {
       tRepoModel,
       tRepoModel,
     ];
+    final testPageNumber = 0;
 
     test(
       '''should perform a GET request on a GITHUB API URL with
@@ -52,7 +53,7 @@ void main() {
         // arrange
         setUpMockHttpClientSuccess200();
         // act
-        dataSource.getTrendingGithubRepos();
+        dataSource.getTrendingGithubRepos(testPageNumber);
         // assert
         verify(mockHttpClient.get(
           'https://api.github.com/search/repositories?q=created:>2017-10-22&sort=stars&order=desc',
@@ -69,7 +70,7 @@ void main() {
         // arrange
         setUpMockHttpClientSuccess200();
         // act
-        final result = await dataSource.getTrendingGithubRepos();
+        final result = await dataSource.getTrendingGithubRepos(testPageNumber);
         // assert
         expect(result, equals(tRepos));
       },
@@ -83,7 +84,7 @@ void main() {
         // act
         final call = dataSource.getTrendingGithubRepos;
         // assert
-        expect(() => call(), throwsA(TypeMatcher<ServerException>()));
+        expect(() => call(testPageNumber), throwsA(TypeMatcher<ServerException>()));
       },
     );
   });

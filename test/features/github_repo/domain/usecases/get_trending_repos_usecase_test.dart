@@ -30,18 +30,20 @@ void main() {
     tRepoModel,
     tRepoModel,
   ];
+  final testPageNumber = 0;
 
   test(
     'should get list of trending repos from the repository',
     () async {
       // arrange
-      when(mockGithubRepoRepository.getTrendingRepos())
+      when(mockGithubRepoRepository.getTrendingRepos(testPageNumber))
           .thenAnswer((_) async => Right(tRepos));
       // act
-      final result = await useCase(NoParams());
+      final result =
+          await useCase(GetTrendingReposParams(pageNumber: testPageNumber));
       // assert
       expect(result, Right(tRepos));
-      verify(mockGithubRepoRepository.getTrendingRepos());
+      verify(mockGithubRepoRepository.getTrendingRepos(testPageNumber));
       verifyNoMoreInteractions(mockGithubRepoRepository);
     },
   );
